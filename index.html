@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Scanner Interface</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 2rem;
+            background-color: #63aae7;
+        }
+        h1 {
+            color: #195cedb7;
+        }
+        #scanButton {
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            background-color: #007bff;
+            color: rgb(105, 233, 50);
+            border: none;
+            border-radius: 4px;
+        }
+        #scanButton:hover {
+            background-color: #0056b3;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 1rem;
+            background-color: rgba(80, 236, 230, 0.412);
+            border: 1px solid #b323f662;
+            min-height: 150px;
+            white-space: pre-wrap;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1>Scanner Interface</h1>
+    <label for="urlInput">Target URL:</label>
+    <input type="text" id="urlInput" placeholder="Enter target URL with parameters" style="width: 100%; padding: 8px; margin: 10px 0;" />
+    <button id="scanButton">Start Scan</button>
+    <div id="result">Scan results will appear here...</div>
+
+    <script>
+        // Call backend API to trigger scan and display results
+        document.getElementById('scanButton').addEventListener('click', function() {
+            const url = document.getElementById('urlInput').value.trim();
+            if (!url) {
+                alert('Please enter a target URL.');
+                return;
+            }
+            document.getElementById('result').textContent = 'Scanning started...';
+            fetch('/api/scan?url=' + encodeURIComponent(url))
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('result').textContent = data.result;
+                })
+                .catch(error => {
+                    document.getElementById('result').textContent = 'Error: ' + error;
+                });
+        });
+    </script>
+</body>
+</html>
